@@ -1,0 +1,28 @@
+<div id="events" ng-controller="eventListController" ng-init="init()">
+    <div ng-repeat="event in events" class="item-event">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div>
+                    <span class="user-name">
+						{{event.user.name + ' ' + event.user.surname}}
+					</span> &nbsp;|&nbsp;
+                    <span class="date">
+						{{event.create_at}}
+					</span>
+                </div>
+                <h4 class="publication-text pull-left">
+                    {{event.name}}
+                </h4>
+                <button class="btn btn-danger" ng-click="delete(event._id)">Remove</button>
+                <button class="btn btn-warning" ng-click="edit(event._id)">Edit</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <div class="col-lg-12 text-center" *ngIf="publications && publications.length">
+    <p>
+        <button class="btn btn-success" (click)="viewMore()" *ngIf="!noMore">
+			Ver más publicaciones 
+		</button>
+    </p>
+</div> -->
