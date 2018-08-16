@@ -7,24 +7,85 @@ myApp.controller('AppCtrl', ['$scope', '$http', function($scope, $http) {
 //var require = new require();
 //var User = require('../models/user');
 
-var ABCEvents = angular.module('ABCEvents', ['ngRoute']);
+var ABCEvents = angular.module('ABCEvents', ['ngRoute', 'ngStorage']);
+
+ABCEvents.factory('EventId', function() {
+
+    var persistObject = [];
+
+    function set(objectName, data) {
+        persistObject[objectName] = data;
+    }
+
+    function get(objectName) {
+        return persistObject[objectName];
+    }
+
+    return {
+        set: set,
+        get: get
+    }
+});
+
+ABCEvents.factory('UserId', function() {
+
+    var persistObject = [];
+
+    function set(objectName, data) {
+        persistObject[objectName] = data;
+    }
+
+    function get(objectName) {
+        return persistObject[objectName];
+    }
+
+    return {
+        set: set,
+        get: get
+    }
+});
+
+ABCEvents.factory('IsUser', function() {
+
+    var persistObject = [];
+
+    function set(objectName, data) {
+        persistObject[objectName] = data;
+    }
+
+    function get(objectName) {
+        return persistObject[objectName];
+    }
+
+    return {
+        set: set,
+        get: get
+    }
+});
 
 
 // configure our routes
 ABCEvents.config(function($routeProvider) {
     $routeProvider
 
-    // route for the home page
+    // route for the about page
         .when('/', {
-        templateUrl: 'views/home.html',
-        controller: 'mainController'
+        templateUrl: 'views/login.html',
+        controller: 'loginController'
     })
 
-    // route for the about page
     .when('/login', {
         templateUrl: 'views/login.html',
         controller: 'loginController'
     })
+
+    // route for the home page
+    .when('/home', {
+        templateUrl: 'views/home.html',
+        controller: 'mainController'
+    })
+
+
 
     // route for the contact page
     .when('/register', {
@@ -42,6 +103,24 @@ ABCEvents.config(function($routeProvider) {
         controller: 'eventListController'
     })
 
+    .when('/editEvent', {
+        templateUrl: 'views/editEvent.html',
+        controller: 'editEventController'
+    })
+
+    .when('/eventDetail', {
+        templateUrl: 'views/eventDetail.html',
+        controller: 'eventDetailController'
+    })
+
+    .when('/logout', {
+        templateUrl: 'views/login.html',
+        controller: 'mainController'
+    }).
+    otherwise({
+        redirectTo: '/'
+    });
+
     ;
 });
 
@@ -56,12 +135,21 @@ ABCEvents.controller('AppCtrl', function($scope, $http) {
 });
 
 // create the controller and inject Angular's $scope
-ABCEvents.controller('mainController', function($scope) {
+ABCEvents.controller('mainController', function($scope, UserId, IsUser) {
     // create a message to display in our view
     $scope.message = 'Bienvenidos a eventos ABC!';
+    $scope.userId = '';
+    $scope.isUser = false;
+
+    $scope.initUser = function() {
+        $scope.userId = UserId.get('user_id');
+        $scope.isUser = IsUser.get('is_user');
+    }();
+
+
 });
 
-ABCEvents.controller('registerController', function($scope, $http) {
+ABCEvents.controller('registerController', function($scope, $http, UserId, IsUser) {
     $scope.title = 'Registrar Usuario';
     $scope.status = '';
     //$scope.required = true;
@@ -71,6 +159,14 @@ ABCEvents.controller('registerController', function($scope, $http) {
         email: '',
         password: ''
     };
+
+    $scope.userId = '';
+    $scope.isUser = false;
+
+    $scope.initUser = function() {
+        $scope.userId = UserId.get('user_id');
+        $scope.isUser = IsUser.get('is_user');
+    }();
 
     $scope.addUser = function(isValid) {
         if (isValid) {
@@ -92,7 +188,7 @@ ABCEvents.controller('registerController', function($scope, $http) {
     };
 });
 
-ABCEvents.controller('loginController', function($scope, $http) {
+ABCEvents.controller('loginController', function($scope, $http, $location, $localStorage, UserId, IsUser) {
     $scope.title = 'Ingresar';
     $scope.status = '';
     $scope.message = '';
@@ -104,13 +200,28 @@ ABCEvents.controller('loginController', function($scope, $http) {
         password: ''
     };
 
+    $scope.userId = '';
+    $scope.isUser = false;
+
+    $scope.initUser = function() {
+        $scope.userId = UserId.get('user_id');
+        $scope.isUser = IsUser.get('is_user');
+    }();
+
     $scope.login = function(isValid) {
+        $scope.isUser = false;
         if (isValid) {
             $http.post('/login', $scope.user).then(function onSuccess(response) {
                 console.log(response);
-                $scope.user = response.data;
+                $scope.user = response.data.user;
                 if (response.status == 200) {
                     $scope.status = 'success';
+                    $scope.isUser = true;
+                    UserId.set('user_id', response.data.user._id);
+                    IsUser.set('is_user', true);
+                    $localStorage.userLogin = response.data.user._id;
+                    this.reload
+                    $location.path('/eventList');
                 } else {
                     $scope.status = 'fail';
                 }
@@ -122,10 +233,17 @@ ABCEvents.controller('loginController', function($scope, $http) {
             $scope.status = 'incomplete';
         }
     };
+
+    $scope.logout = function() {
+        $scope.isUser = false;
+        UserId.set('user_id', '');
+        IsUser.set('is_user', false);
+        $location.path('/login');
+    }
 });
 
 
-ABCEvents.controller('eventController', function($scope, $http) {
+ABCEvents.controller('eventController', function($scope, $http, UserId, IsUser) {
     $scope.title = 'Crear Evento';
     $scope.status = '';
     $scope.categories = ['Conferencia', 'Seminario', 'Congreso', 'Curso'];
@@ -139,11 +257,20 @@ ABCEvents.controller('eventController', function($scope, $http) {
         type: '',
         startDate: '',
         endDate: '',
-        user: '5b70f0f4559b1661413f74fa'
+        user: ''
     };
+
+    $scope.userId = '';
+    $scope.isUser = false;
+
+    $scope.initUser = function() {
+        $scope.userId = UserId.get('user_id');
+        $scope.isUser = IsUser.get('is_user');
+    }();
 
     $scope.addEvent = function(isValid) {
         if (isValid) {
+            $scope.event.user = $scope.userId;
             $http.post('/event', $scope.event).then(function onSuccess(response) {
                 console.log(response);
                 $scope.event = response.data;
@@ -164,12 +291,23 @@ ABCEvents.controller('eventController', function($scope, $http) {
 });
 
 
-ABCEvents.controller('eventListController', function($scope, $http) {
+ABCEvents.controller('eventListController', function($scope, $http, EventId, UserId, IsUser) {
     $scope.title = 'Listar Eventos';
     $scope.status = '';
     //$scope.required = true;
+
+    $scope.userId = '';
+    $scope.isUser = false;
+
+    $scope.initUser = function() {
+        $scope.userId = UserId.get('user_id');
+        $scope.isUser = IsUser.get('is_user');
+        console.log('este es el userId:  ' + $scope.userId);
+        console.log('este es el userId: ' + $scope.isUser);
+    }();
+
     $scope.init = function() {
-        $http.get('/events-user/5b70f0f4559b1661413f74fa').then(function onSuccess(response) {
+        $http.get('/events-user/' + $scope.userId).then(function onSuccess(response) {
             console.log(response);
             $scope.events = response.data.events;
             if (response.status == 200) {
@@ -193,37 +331,101 @@ ABCEvents.controller('eventListController', function($scope, $http) {
             console.log(response);
             $scope.status = 'fail';
         });
+    };
 
+    $scope.edit = function(id) {
+        EventId.set('event_id', id);
+        //$location.path('/editEvent');
     }
 
-    //$scope.onInit();
-
-
+    $scope.detail = function(id) {
+        EventId.set('event_id', id);
+        //$location.path('/editEvent');
+    }
 
 });
 
 
+ABCEvents.controller('editEventController', function($scope, $http, $location, EventId, UserId, IsUser) {
+    $scope.title = 'Editar Evento';
+    $scope.status = '';
+    $scope.categories = ['Conferencia', 'Seminario', 'Congreso', 'Curso'];
+    $scope.types = ['Presencial', 'Virtual']
+        //$scope.required = true;
+
+    $scope.userId = '';
+    $scope.isUser = false;
+
+    $scope.initUser = function() {
+        $scope.userId = UserId.get('user_id');
+        $scope.isUser = IsUser.get('is_user');
+    }();
+
+    $scope.init = function() {
+        console.log('id: ' + EventId.get('event_id'));
+        $http.get('/event/' + EventId.get('event_id')).then(function onSuccess(response) {
+            console.log(response);
+            $scope.event = response.data.event;
+        }).catch(function onError(response) {
+            console.log(response);
+        });
+    };
 
 
 
+    $scope.update = function(isValid) {
+        console.log('ejecuto boto');
+
+        $scope.userId = '';
+        $scope.isUser = false;
+
+        $scope.initUser = function() {
+            $scope.userId = UserId.get('user_id');
+            $scope.isUser = IsUser.get('is_user');
+        }();
+
+        if (isValid) {
+            $http.put('/event/' + $scope.event._id, $scope.event).then(function onSuccess(response) {
+                console.log(response);
+                if (response.status == 200) {
+                    $scope.status = 'success';
+                    $scope.event = response.data.event;
+                    $location.path('/eventList');
+                } else {
+                    $scope.status = 'fail';
+                }
+            }).catch(function onError(response) {
+                console.log(response);
+                $scope.status = 'fail';
+            });
+        } else {
+            $scope.status = 'incomplete';
+        }
+
+    };
+});
 
 
+ABCEvents.controller('eventDetailController', function($scope, $http, EventId, UserId, IsUser) {
+    $scope.title = 'Detalle Evento';
+    $scope.status = '';
 
-/*$http(...)
-  .then(function onSuccess(response) {
-    // Handle success
-    var data = response.data;
-    var status = response.status;
-    var statusText = response.statusText;
-    var headers = response.headers;
-    var config = response.config;
-    ...
-  }).catch(function onError(response) {
-    // Handle error
-    var data = response.data;
-    var status = response.status;
-    var statusText = response.statusText;
-    var headers = response.headers;
-    var config = response.config;
-    ...
-  });*/
+    $scope.userId = '';
+    $scope.isUser = false;
+
+    $scope.initUser = function() {
+        $scope.userId = UserId.get('user_id');
+        $scope.isUser = IsUser.get('is_user');
+    }();
+    //$scope.required = true;
+    $scope.init = function() {
+        console.log('id: ' + EventId.get('event_id'));
+        $http.get('/event/' + EventId.get('event_id')).then(function onSuccess(response) {
+            console.log(response);
+            $scope.event = response.data.event;
+        }).catch(function onError(response) {
+            console.log(response);
+        });
+    };
+
+});

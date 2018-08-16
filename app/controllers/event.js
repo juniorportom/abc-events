@@ -105,12 +105,12 @@ function getEventsUser(req, res) {
 }
 
 function getEvent(req, res) {
-    var EvemtId = req.params.id;
+    var eventId = req.params.id;
 
-    Event.findById(evemtId, (error, event) => {
-        if (error) return res.status(500).send({ message: 'Error al obtener la publicación' });
+    Event.findById(eventId, (error, event) => {
+        if (error) return res.status(500).send({ message: 'Error al obtener el evento' });
 
-        if (!event) return res.status(404).send({ message: 'La publicación no existe!!!' });
+        if (!event) return res.status(404).send({ message: 'El evento no existe!!!' });
 
         return res.status(200).send({ event });
     });
@@ -130,10 +130,10 @@ function updateEvent(req, res) {
     var eventId = req.params.id;
     var update = req.body;
 
-    User.findByIdAndUpdate(eventId, update, { new: true }, (error, eventUpdated) => {
+    Event.findByIdAndUpdate(eventId, update, { new: true }, (error, eventUpdated) => {
         if (error) return res.status(500).send({ message: 'Error en la petición' });
 
-        if (!eventUpdated) return res.status(404).send({ message: 'No se ha podido actualizar el event' });
+        if (!eventUpdated) return res.status(404).send({ message: 'No se ha podido actualizar el evento' });
 
         return res.status(200).send({ event: eventUpdated });
     });

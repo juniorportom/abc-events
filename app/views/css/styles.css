@@ -33,12 +33,25 @@ a:active {
 }
 
 #main {
-    height: 900px;
+    margin-bottom: 30px;
+    min-height: 800px;
+}
+
+.content {
+    margin-top: 30px;
+}
+
+.h1-strong {
+    font-size: 35px;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
 }
 
 .navbar {
     background-color: #818182;
     color: white !important;
+    margin-top: 0;
 }
 
 #events {
@@ -102,6 +115,61 @@ a:visited {
 a:hover,
 a:active {
     border-bottom: 2px solid #e67e22;
+}
+
+.detail-event {
+    width: 650px;
+    margin: 0 auto;
+    box-shadow: 5px 5px 5px #555;
+    background: rgba(233, 230, 230, 0.9);
+    border-radius: 15px;
+    padding: 10px;
+}
+
+.event-item {
+    border-bottom: thin solid #ccc;
+    padding: 10px;
+}
+
+.item-name {
+    font-style: italic;
+    font-size: 13px;
+}
+
+.item-value {
+    font-size: 18px;
+}
+
+.btn-detail {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.link-btn {
+    padding: 5px 5px;
+    margin: 0 3px;
+    border-radius: 5px;
+    color: #fff;
+    font-size: 15px !important;
+    width: 100px;
+    height: 40px;
+}
+
+.item-list-event {
+    padding: 20px 20px;
+    display: inline-block;
+    border: solid 1px #ccc;
+    border-radius: 15px;
+}
+
+.main-data-event {
+    display: inline-block;
+    width: 300px;
+    margin-right: 30px;
+}
+
+.options-event {
+    float: right;
 }
 
 

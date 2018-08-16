@@ -1,0 +1,105 @@
+<div ng-controller="eventDetailController" ng-init="init()" class="content">
+
+    <nav class="navbar navbar-default ">
+        <div class=" container ">
+            <div class="navbar-header nav-title ">
+                <a class="navbar-brand" href="#home">Eventos ABC</a>
+            </div>
+            <div class="main-nav" ng-if="!isUser">
+                <ul>
+                    <li><a href="#login"><i class="fa fa-shield"></i> Ingresar</a></li>
+                    <li><a href="#register"><i class="fa fa-comment"></i> Registro</a></li>
+                    <!-- <li><a href="#event"><i class="fa fa-comment"></i> Crear Evento</a></li>
+                                        <li><a href="#eventList"><i class="fa fa-comment"></i> Listar Eventos</a></li> -->
+                </ul>
+            </div>
+            <div class="main-nav" ng-if="isUser">
+                <ul>
+                    <li><a href="#home"><i class="fa fa-home"></i> Home</a></li>
+                    <li><a href="#eventList"><i class="fa fa-shield"></i>Lista Eventos</a></li>
+                    <li><a href="#event"><i class="fa fa-shield"></i>Crear Evento</a></li>
+                    <li><a href="#login" ng-click="logout()"><i class="fa fa-comment"></i> Salir</a></li>
+                    <!-- <li><a href="#event"><i class="fa fa-comment"></i> Crear Evento</a></li>
+                                            <li><a href="#eventList"><i class="fa fa-comment"></i> Listar Eventos</a></li> -->
+                </ul>
+            </div>
+
+        </div>
+    </nav>
+
+
+    <div class="col-lg-5">
+        <h1 class=" h1-strong ">{{title}}</h1>
+
+        <div class="detail-event">
+            <div class="event-item" ng-if="event.name && event.name != ''">
+                <h4 class="item-name">
+                    Nombre
+                </h4>
+                <h4 class="item-value">
+                    {{event.name}}
+                </h4>
+            </div>
+            <div class="event-item" ng-if="event.category && event.category != ''">
+                <h4 class="item-name">
+                    Categoria
+                </h4>
+                <h4 class="item-value">
+                    {{event.category}}
+                </h4>
+            </div>
+            <div class="event-item" ng-if="event.place && event.place != ''">
+                <h4 class="item-name">
+                    Lugar
+                </h4>
+                <h4 class="item-value">
+                    {{event.place}}
+                </h4>
+            </div>
+            <div class="event-item" ng-if="event.address && event.address != ''">
+                <h4 class="item-name">
+                    Dirección
+                </h4>
+                <h4 class="item-value">
+                    {{event.address}}
+                </h4>
+            </div>
+            <div class="event-item" ng-if="event.type && event.type != ''">
+                <h4 class="item-name">
+                    Tipo
+                </h4>
+                <h4 class="item-value">
+                    {{event.type}}
+                </h4>
+            </div>
+            <div class="event-item" ng-if="event.startDate && event.startDate != ''">
+                <h4 class="item-name">
+                    Fecha Inicio
+                </h4>
+                <h4 class="item-value">
+                    {{event.startDate}}
+                </h4>
+            </div>
+            <div class="event-item" ng-if="event.endDate && event.endDate != ''">
+                <h4 class="item-name">
+                    Fecha Fin
+                </h4>
+                <h4 class="item-value">
+                    {{event.endDate}}
+                </h4>
+            </div>
+            <div class="event-item" ng-if="event.create_at && event.create_at != ''">
+                <h4 class="item-name">
+                    Cuando se creo
+                </h4>
+                <h4 class="item-value">
+                    {{event.create_at}}
+                </h4>
+            </div>
+            <div class="btn-detail">
+                <a class="btn btn-primary link-btn" href="#eventList">Volver</a>
+            </div>
+        </div>
+
+    </div>
+</div>

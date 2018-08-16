@@ -1,28 +1,76 @@
-<div id="events" ng-controller="eventListController" ng-init="init()">
-    <div ng-repeat="event in events" class="item-event">
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <div>
-                    <span class="user-name">
-						{{event.user.name + ' ' + event.user.surname}}
-					</span> &nbsp;|&nbsp;
-                    <span class="date">
-						{{event.create_at}}
-					</span>
+<div ng-controller="eventListController" ng-init="init()">
+
+
+    <nav class="navbar navbar-default ">
+        <div class=" container ">
+            <div class="navbar-header nav-title ">
+                <a class="navbar-brand" href="#home">Eventos ABC</a>
+            </div>
+            <div class="main-nav" ng-if="!isUser">
+                <ul>
+                    <li><a href="#login"><i class="fa fa-shield"></i> Ingresar</a></li>
+                    <li><a href="#register"><i class="fa fa-comment"></i> Registro</a></li>
+                    <!-- <li><a href="#event"><i class="fa fa-comment"></i> Crear Evento</a></li>
+                                            <li><a href="#eventList"><i class="fa fa-comment"></i> Listar Eventos</a></li> -->
+                </ul>
+            </div>
+            <div class="main-nav" ng-if="isUser">
+                <ul>
+                    <li><a href="#home"><i class="fa fa-home"></i> Home</a></li>
+                    <li><a href="#eventList"><i class="fa fa-shield"></i>Lista Eventos</a></li>
+                    <li><a href="#event"><i class="fa fa-shield"></i>Crear Evento</a></li>
+                    <li><a href="#login" ng-click="logout()"><i class="fa fa-comment"></i> Salir</a></li>
+                    <!-- <li><a href="#event"><i class="fa fa-comment"></i> Crear Evento</a></li>
+                                                <li><a href="#eventList"><i class="fa fa-comment"></i> Listar Eventos</a></li> -->
+                </ul>
+            </div>
+
+        </div>
+    </nav>
+
+    <div id="events" class="col-lg-12">
+        <div ng-if="!events || events.length == 0">
+            <h4>No tiene eventos registrados</h4>
+        </div>
+        <div ng-repeat="event in events">
+            <div class="col-lg-12">
+                <div class="panel-body item-list-event">
+                    <div class="pull-left main-data-event">
+                        <span class="user-name">
+                                {{event.name}}
+                            </span> &nbsp;|&nbsp;
+                        <span class="date">
+                                {{event.create_at}}
+                            </span>
+                        <br>
+                        <span class="user-name">
+                                    {{event.category}}
+                                </span> &nbsp;|&nbsp;
+                        <span class="date">
+                                    {{event.type}}
+                                </span>
+
+
+                    </div>
+                    <div class="pull-right options-event ">
+                        <a class="btn btn-primary link-btn" href="#eventDetail" ng-click="detail(event._id)">Detalle</a>
+                        <a class="btn btn-warning link-btn" href="#editEvent" ng-click="edit(event._id)">Editar</a>
+                        <a class="btn btn-danger link-btn" ng-click="delete(event._id)">Borrar</a>
+                    </div>
+
+                    <!--button class="btn btn-danger" ng-click="delete(event._id)">Borrar</button-->
+                    <!--button class="btn btn-warning" ng-click="edit(event._id)" ng-href="#editEvent">Editar</button-->
+
                 </div>
-                <h4 class="publication-text pull-left">
-                    {{event.name}}
-                </h4>
-                <button class="btn btn-danger" ng-click="delete(event._id)">Remove</button>
-                <button class="btn btn-warning" ng-click="edit(event._id)">Edit</button>
             </div>
         </div>
     </div>
+    <!-- <div class="col-lg-12 text-center" *ngIf="publications && publications.length">
+            <p>
+                <button class="btn btn-success" (click)="viewMore()" *ngIf="!noMore">
+                    Ver más publicaciones 
+                </button>
+            </p>
+        </div> -->
+
 </div>
-<!-- <div class="col-lg-12 text-center" *ngIf="publications && publications.length">
-    <p>
-        <button class="btn btn-success" (click)="viewMore()" *ngIf="!noMore">
-			Ver más publicaciones 
-		</button>
-    </p>
-</div> -->

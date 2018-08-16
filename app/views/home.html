@@ -1,5 +1,36 @@
-<div class="jumbotron text-center">
-    <h1>Home Page</h1>
+<div ng-controller="loginController" class="content">
 
-    <p>{{ message }}</p>
+    <nav class="navbar navbar-default ">
+        <div class=" container ">
+            <div class="navbar-header nav-title ">
+                <a class="navbar-brand" href="#home">Eventos ABC</a>
+            </div>
+            <div class="main-nav" ng-if="!isUser">
+                <ul>
+                    <li><a href="#login"><i class="fa fa-shield"></i> Ingresar</a></li>
+                    <li><a href="#register"><i class="fa fa-comment"></i> Registro</a></li>
+                    <!-- <li><a href="#event"><i class="fa fa-comment"></i> Crear Evento</a></li>
+                                        <li><a href="#eventList"><i class="fa fa-comment"></i> Listar Eventos</a></li> -->
+                </ul>
+            </div>
+            <div class="main-nav" ng-if="isUser">
+                <ul>
+                    <li><a href="#home"><i class="fa fa-home"></i> Home</a></li>
+                    <li><a href="#eventList"><i class="fa fa-shield"></i>Lista Eventos</a></li>
+                    <li><a href="#event"><i class="fa fa-shield"></i>Crear Evento</a></li>
+                    <li><a href="#login" ng-click="logout()"><i class="fa fa-comment"></i> Salir</a></li>
+                    <!-- <li><a href="#event"><i class="fa fa-comment"></i> Crear Evento</a></li>
+                                            <li><a href="#eventList"><i class="fa fa-comment"></i> Listar Eventos</a></li> -->
+                </ul>
+            </div>
+
+        </div>
+    </nav>
+
+
+    <div class="jumbotron text-center">
+        <h1>Home Page</h1>
+
+        <p>{{ message }}</p>
+    </div>
 </div>
