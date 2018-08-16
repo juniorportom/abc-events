@@ -7,7 +7,7 @@ myApp.controller('AppCtrl', ['$scope', '$http', function($scope, $http) {
 //var require = new require();
 //var User = require('../models/user');
 
-var ABCEvents = angular.module('ABCEvents', ['ngRoute', 'ngStorage']);
+var ABCEvents = angular.module('ABCEvents', ['ngRoute', 'ngStorage' , 'angularMoment']);
 
 ABCEvents.factory('EventId', function() {
 
@@ -192,6 +192,9 @@ ABCEvents.controller('loginController', function($scope, $http, $location, $loca
     $scope.title = 'Ingresar';
     $scope.status = '';
     $scope.message = '';
+    $scope.dateData = '';
+    $scope.dateData2 = '';
+    $scope.publishedAt = '1534453808367';
     //$scope.required = true;
     $scope.user = {
         name: '',
