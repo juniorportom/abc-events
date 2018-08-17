@@ -76,25 +76,19 @@
                 <h4 class="item-name">
                     Fecha Inicio
                 </h4>
-                <h4 class="item-value">
-                    {{event.startDate}}
-                </h4>
+                <input class="item-value" type="datetime-local" name="startDate" ng-model="iniDate" placeholder="yyyy-MM-ddTHH:mm:ss" disabled>
             </div>
             <div class="event-item" ng-if="event.endDate && event.endDate != ''">
                 <h4 class="item-name">
                     Fecha Fin
                 </h4>
-                <h4 class="item-value">
-                    {{event.endDate}}
-                </h4>
+                <input class="item-value" type="datetime-local" name="startDate" ng-model="enDate" placeholder="yyyy-MM-ddTHH:mm:ss" disabled>
             </div>
             <div class="event-item" ng-if="event.create_at && event.create_at != ''">
                 <h4 class="item-name">
-                    Cuando se creo
+                    Hace cuanto se creo
                 </h4>
-                <h4 class="item-value">
-                    {{event.create_at}}
-                </h4>
+                <span class="item-value" am-time-ago="event.create_at"></span>
             </div>
             <div class="btn-detail">
                 <a class="btn btn-primary link-btn" href="#eventList">Volver</a>

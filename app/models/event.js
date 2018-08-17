@@ -10,8 +10,8 @@ var eventSchema = Schema({
     place: String,
     address: String,
     type: String,
-    startDate: String,
-    endDate: String,
+    startDate: Date,
+    endDate: Date,
     create_at: String,
     user: { type: Schema.ObjectId, ref: 'User' }
 });

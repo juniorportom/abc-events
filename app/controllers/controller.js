@@ -7,7 +7,7 @@ myApp.controller('AppCtrl', ['$scope', '$http', function($scope, $http) {
 //var require = new require();
 //var User = require('../models/user');
 
-var ABCEvents = angular.module('ABCEvents', ['ngRoute', 'ngStorage' , 'angularMoment']);
+var ABCEvents = angular.module('ABCEvents', ['ngRoute', 'ngStorage', 'angularMoment']);
 
 ABCEvents.factory('EventId', function() {
 
@@ -251,7 +251,9 @@ ABCEvents.controller('eventController', function($scope, $http, UserId, IsUser) 
     $scope.status = '';
     $scope.categories = ['Conferencia', 'Seminario', 'Congreso', 'Curso'];
     $scope.types = ['Presencial', 'Virtual']
-        //$scope.required = true;
+    $scope.iniDate = '';
+    $scope.enDate = '';
+    //$scope.required = true;
     $scope.event = {
         name: '',
         category: '',
@@ -274,6 +276,9 @@ ABCEvents.controller('eventController', function($scope, $http, UserId, IsUser) 
     $scope.addEvent = function(isValid) {
         if (isValid) {
             $scope.event.user = $scope.userId;
+            console.log($scope.iniDate, $scope.enDate);
+            $scope.event.startDate = $scope.iniDate;
+            $scope.event.endDate = $scope.enDate;
             $http.post('/event', $scope.event).then(function onSuccess(response) {
                 console.log(response);
                 $scope.event = response.data;
@@ -312,7 +317,7 @@ ABCEvents.controller('eventListController', function($scope, $http, EventId, Use
     $scope.init = function() {
         $http.get('/events-user/' + $scope.userId).then(function onSuccess(response) {
             console.log(response);
-            $scope.events = response.data.events;
+            $scope.events = response.data.events.sort(compare);
             if (response.status == 200) {
                 $scope.status = 'success';
             }
@@ -346,6 +351,10 @@ ABCEvents.controller('eventListController', function($scope, $http, EventId, Use
         //$location.path('/editEvent');
     }
 
+    function compare(a, b) {
+        return (b.create_at - a.create_at);
+    }
+
 });
 
 
@@ -358,6 +367,8 @@ ABCEvents.controller('editEventController', function($scope, $http, $location, E
 
     $scope.userId = '';
     $scope.isUser = false;
+    $scope.iniDate = '';
+    $scope.enDate = '';
 
     $scope.initUser = function() {
         $scope.userId = UserId.get('user_id');
@@ -369,6 +380,8 @@ ABCEvents.controller('editEventController', function($scope, $http, $location, E
         $http.get('/event/' + EventId.get('event_id')).then(function onSuccess(response) {
             console.log(response);
             $scope.event = response.data.event;
+            $scope.iniDate = new Date(response.data.event.startDate);
+            $scope.enDate = new Date(response.data.event.endDate);
         }).catch(function onError(response) {
             console.log(response);
         });
@@ -388,6 +401,8 @@ ABCEvents.controller('editEventController', function($scope, $http, $location, E
         }();
 
         if (isValid) {
+            $scope.event.startDate = $scope.iniDate;
+            $scope.event.endDate = $scope.enDate;
             $http.put('/event/' + $scope.event._id, $scope.event).then(function onSuccess(response) {
                 console.log(response);
                 if (response.status == 200) {
@@ -416,6 +431,9 @@ ABCEvents.controller('eventDetailController', function($scope, $http, EventId, U
     $scope.userId = '';
     $scope.isUser = false;
 
+    $scope.iniDate = '';
+    $scope.enDate = '';
+
     $scope.initUser = function() {
         $scope.userId = UserId.get('user_id');
         $scope.isUser = IsUser.get('is_user');
@@ -426,6 +444,8 @@ ABCEvents.controller('eventDetailController', function($scope, $http, EventId, U
         $http.get('/event/' + EventId.get('event_id')).then(function onSuccess(response) {
             console.log(response);
             $scope.event = response.data.event;
+            $scope.iniDate = new Date(response.data.event.startDate);
+            $scope.enDate = new Date(response.data.event.endDate);
         }).catch(function onError(response) {
             console.log(response);
         });

@@ -3,7 +3,7 @@
     <nav class="navbar navbar-default ">
         <div class=" container ">
             <div class="navbar-header nav-title ">
-                <a class="navbar-brand" href="#home">Eventos ABC</a>
+                <h4>Eventos ABC</h4>
             </div>
             <div class="main-nav" ng-if="!isUser">
                 <ul>
@@ -56,31 +56,6 @@
             </div>
             <input type="submit" name="Entrar" class="btn btn-success" />
         </form>
-        
-         <form>
-             <div class="form-group">
-                <label>Fecha fin</label>
-                <input type="date" name="dateData" ng-model="dateData" class="form-control" placeholder="yyyy-MM-dd">
-                 
-            </div>
-             <div class="form-group">
-                <label>Fecha fin</label>
-                <input type="datetime-local" name="dateData2" ng-model="dateData2" class="form-control" placeholder="yyyy-MM-ddTHH:mm:ss">
-                 
-            </div>
-             <h4>
-                 {{dateData}}
-             </h4>
-             <h4>
-                 {{dateData2}}
-             </h4>
-             
-                 <span am-time-ago="publishedAt"></span>
-             
-        
-        </form>
-        
-        
     </div>
 
 </div>

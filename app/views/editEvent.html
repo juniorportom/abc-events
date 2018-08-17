@@ -66,11 +66,11 @@
             </div>
             <div class="form-group ">
                 <label>Fecha inicio</label>
-                <input type="date " name="startDate " ng-model="event.startDate " class="form-control " placeholder="yyyy-MM-dd ">
+                <input type="datetime-local" name="startDate " ng-model="iniDate" class="form-control " placeholder="yyyy-MM-ddTHH:mm:ss" min="2018-01-01T00:00:00" max="2050-12-31T00:00:00">
             </div>
             <div class="form-group ">
                 <label>Fecha fin</label>
-                <input type="date " name="endDate " ng-model="event.endDate " class="form-control " placeholder="yyyy-MM-dd ">
+                <input type="datetime-local" name="endDate " ng-model="enDate" class="form-control " placeholder="yyyy-MM-ddTHH:mm:ss" min="2018-01-01T00:00:00" max="2050-12-31T00:00:00">
             </div>
             <input type="submit" name="Actualizar" class="btn btn-success" />
         </form>

@@ -52,6 +52,7 @@ a:active {
     background-color: #818182;
     color: white !important;
     margin-top: 0;
+    margin-bottom: 30px;
 }
 
 #events {

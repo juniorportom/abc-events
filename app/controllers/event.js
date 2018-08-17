@@ -19,10 +19,10 @@ function saveEvent(req, res) {
     event.place = params.place;
     event.address = params.address;
     event.type = params.type;
-    event.start_date = params.start_date;
-    event.end_date = params.end_date;
+    event.startDate = params.startDate;
+    event.endDate = params.endDate;
     event.user = params.user;
-    event.create_at = moment().unix();
+    event.create_at = Date.now(); //moment().unix();
 
     event.save((error, eventStored) => {
         if (error) return res.status(500).send({ message: 'Error al guardar la publicación' });
