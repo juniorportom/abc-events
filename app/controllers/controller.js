@@ -149,7 +149,7 @@ ABCEvents.controller('mainController', function($scope, UserId, IsUser) {
 
 });
 
-ABCEvents.controller('registerController', function($scope, $http, UserId, IsUser) {
+ABCEvents.controller('registerController', function($scope, $http, $location, UserId, IsUser) {
     $scope.title = 'Registrar Usuario';
     $scope.status = '';
     //$scope.required = true;
@@ -175,6 +175,7 @@ ABCEvents.controller('registerController', function($scope, $http, UserId, IsUse
                 $scope.user = response.data;
                 if (response.status == 200) {
                     $scope.status = 'success';
+                    $location.path('/login');
                 } else {
                     $scope.status = 'fail';
                 }
@@ -246,7 +247,7 @@ ABCEvents.controller('loginController', function($scope, $http, $location, $loca
 });
 
 
-ABCEvents.controller('eventController', function($scope, $http, UserId, IsUser) {
+ABCEvents.controller('eventController', function($scope, $http, $location, UserId, IsUser) {
     $scope.title = 'Crear Evento';
     $scope.status = '';
     $scope.categories = ['Conferencia', 'Seminario', 'Congreso', 'Curso'];
@@ -284,6 +285,7 @@ ABCEvents.controller('eventController', function($scope, $http, UserId, IsUser) 
                 $scope.event = response.data;
                 if (response.status == 200) {
                     $scope.status = 'success';
+                    $location.path('/eventList');
                 } else {
                     $scope.status = 'fail';
                 }
